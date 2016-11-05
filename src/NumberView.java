@@ -9,22 +9,24 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.Map;
+import java.util.Vector;
 
 
-class WordView extends JScrollPane {
+class NumberView extends JScrollPane {
     private static final long serialVersionUID = 1L;
 
     private JTable table;
     private DefaultTableModel tableModel;
-    private Map<String, String> words;
+    private Vector<Integer> value;
+    private Vector<String> key;
 
-    WordView(Map<String, String> map, int width, int height, String description) {
-        String[] column = {"Słowo:", "Wystąpienia:"};
+    NumberView(Vector<Integer> value, Vector<String> key, int width, int height, String description) {
+        String[] column = {"Wystąpienia:", "Słowo:"};
         tableModel = new DefaultTableModel(column, 0);
         table = new JTable(tableModel);
         table.setRowSelectionAllowed(false);
-        this.words = map;
+        this.value = value;
+        this.key = key;
         setViewportView(table);
         setPreferredSize(new Dimension(width, height));
         setBorder(BorderFactory.createTitledBorder(description));
@@ -32,12 +34,9 @@ class WordView extends JScrollPane {
 
     void refresh() {
         tableModel.setRowCount(0);
-        for (String key : words.keySet()) {
-            String value = words.get(key);
-            String[] row = {key, value};
+        for (int i = 0; i < value.size(); i++) {
+            String[] row = {Integer.toString(value.get(i)), key.get(i)};
             tableModel.addRow(row);
         }
-
     }
-
 }
